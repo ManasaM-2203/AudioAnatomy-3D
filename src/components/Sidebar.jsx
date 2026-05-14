@@ -1,9 +1,18 @@
 import React from 'react';
 import { EAR_PARTS } from '../constants';
-import { Activity, Beaker, Ear } from 'lucide-react';
+import { Activity, Beaker, Ear, Volume2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Sidebar({ mode, setMode, activePart, setActivePart }) {
+function getDecibelConfig(db) {
+  if (db <= 20) return { status: 'Safe', icon: ShieldCheck, color: '#38bdf8', title: 'Near Silence', desc: 'No significant ear stimulation. Sound waves are barely perceptible.' };
+  if (db <= 60) return { status: 'Safe', icon: ShieldCheck, color: '#10b981', title: 'Normal Range', desc: 'Safe listening range. Normal hearing transmission occurs flawlessly.' };
+  if (db <= 85) return { status: 'Caution', icon: AlertTriangle, color: '#f59e0b', title: 'Loud', desc: 'Strong sound detected. Prolonged continuous exposure may cause hearing fatigue.' };
+  if (db <= 100) return { status: 'Dangerous', icon: AlertTriangle, color: '#f97316', title: 'Risk Zone', desc: 'Intense mechanical pressure. Hair cells inside the cochlea are under physical stress.' };
+  if (db <= 120) return { status: 'Dangerous', icon: AlertTriangle, color: '#ef4444', title: 'Harmful Intensity', desc: 'Dangerous exposure. Early mechanical trauma may be actively occurring in the inner ear.' };
+  return { status: 'Trauma', icon: AlertTriangle, color: '#b91c1c', title: 'Acoustic Trauma', desc: 'Extreme amplitude! Ossicles over-transmitting force. Permanent tissue damage likely.' };
+}
+
+export default function Sidebar({ mode, setMode, activePart, setActivePart, decibelLevel, setDecibelLevel }) {
   const activePartData = EAR_PARTS.find(p => p.id === activePart);
 
   return (
@@ -24,7 +33,16 @@ export default function Sidebar({ mode, setMode, activePart, setActivePart }) {
             setActivePart('none');
           }}
         >
-          Simulation
+          Tour
+        </button>
+        <button 
+          className={`tab-btn ${mode === 'decibel' ? 'active' : ''}`}
+          onClick={() => {
+            setMode('decibel');
+            setActivePart('none');
+          }}
+        >
+          Decibel
         </button>
       </div>
 
@@ -76,6 +94,42 @@ export default function Sidebar({ mode, setMode, activePart, setActivePart }) {
           <p style={{ textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
             Use the controls at the bottom of the screen to step through the hearing process.
           </p>
+        </motion.div>
+      )}
+
+      {mode === 'decibel' && (
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="decibel-panel">
+            <div className="db-value" style={{ color: getDecibelConfig(decibelLevel).color }}>
+              {decibelLevel} <span style={{ fontSize: '1.2rem', opacity: 0.7 }}>dB</span>
+            </div>
+            
+            <input 
+              type="range" 
+              className="db-slider" 
+              min="0" max="130" 
+              value={decibelLevel} 
+              onChange={(e) => setDecibelLevel(parseInt(e.target.value))}
+            />
+            
+            {(() => {
+              const cfg = getDecibelConfig(decibelLevel);
+              const StatusIcon = cfg.icon;
+              return (
+                <div className="db-info-box" style={{ borderColor: cfg.color }}>
+                  <div className="db-status-badge" style={{ backgroundColor: cfg.color + '22', color: cfg.color }}>
+                    <StatusIcon size={16} /> <span>{cfg.status}</span>
+                  </div>
+                  <h4 style={{ color: cfg.color, marginBottom: '8px' }}>{cfg.title}</h4>
+                  <p>{cfg.desc}</p>
+                </div>
+              );
+            })()}
+          </div>
         </motion.div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { SIMULATION_STEPS } from '../constants';
-import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, RefreshCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function SimulationControls({ simulationStep, setSimulationStep }) {
@@ -9,7 +9,13 @@ export default function SimulationControls({ simulationStep, setSimulationStep }
   const isLast = simulationStep === SIMULATION_STEPS.length - 1;
 
   const handlePrev = () => setSimulationStep(Math.max(0, simulationStep - 1));
-  const handleNext = () => setSimulationStep(Math.min(SIMULATION_STEPS.length - 1, simulationStep + 1));
+  const handleNext = () => {
+    if (isLast) {
+      setSimulationStep(0);
+    } else {
+      setSimulationStep(simulationStep + 1);
+    }
+  };
 
   return (
     <div className="sim-controls-wrapper">
@@ -45,11 +51,12 @@ export default function SimulationControls({ simulationStep, setSimulationStep }
           <button 
             className="sim-btn" 
             onClick={handleNext} 
-            disabled={isLast}
             style={isFirst ? { background: 'var(--accent)', color: 'white' } : {}}
           >
             {isFirst ? (
               <><Play size={20} /> Start Simulation</>
+            ) : isLast ? (
+              <><RefreshCcw size={20} /> Reset Tour</>
             ) : (
               <>Next <ChevronRight size={20} /></>
             )}

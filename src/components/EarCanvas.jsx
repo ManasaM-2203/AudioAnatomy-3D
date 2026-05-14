@@ -2,8 +2,10 @@ import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, ContactShadows, Float } from '@react-three/drei';
 import EarModel from './EarModel';
+import Speaker from './Speaker';
+import SoundWaves from './SoundWaves';
 
-export default function EarCanvas({ activePart, simulationStep, isSimulationMode }) {
+export default function EarCanvas({ activePart, simulationStep, mode, decibelLevel, healthStatsRef }) {
   return (
     <div className="canvas-container">
       <Canvas camera={{ position: [0, 2, 8], fov: 45 }}>
@@ -18,11 +20,22 @@ export default function EarCanvas({ activePart, simulationStep, isSimulationMode
           <Environment preset="city" />
           
           <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.5}>
-            <EarModel 
-              activePart={activePart} 
-              simulationStep={simulationStep} 
-              isSimulationMode={isSimulationMode} 
-            />
+            {/* Shift left in decibel mode to make room for the large UI dashboard */}
+            <group position={[mode === 'decibel' ? -1.0 : 0, 0.8, 0]}>
+              <EarModel 
+                activePart={activePart} 
+                simulationStep={simulationStep} 
+                mode={mode} 
+                decibelLevel={decibelLevel}
+                healthStatsRef={healthStatsRef}
+              />
+              {mode === 'decibel' && (
+                <>
+                  <Speaker position={[-5, 0, 0]} decibelLevel={decibelLevel} />
+                  <SoundWaves decibelLevel={decibelLevel} />
+                </>
+              )}
+            </group>
           </Float>
 
           {/* Aesthetic ground shadow */}
@@ -35,7 +48,7 @@ export default function EarCanvas({ activePart, simulationStep, isSimulationMode
           enableRotate={true}
           minDistance={3}
           maxDistance={15}
-          autoRotate={!isSimulationMode && activePart === 'none'}
+          autoRotate={mode !== 'simulation' && mode !== 'decibel' && activePart === 'none'}
           autoRotateSpeed={0.5}
         />
       </Canvas>
