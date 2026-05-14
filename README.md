@@ -1,16 +1,58 @@
-# React + Vite
+# AudioAnatomy 3D 🎧🦻
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AudioAnatomy 3D is an interactive web-based educational platform that visualizes the human ear anatomy in 3D while simulating sound transmission and hearing health effects in real time.
 
-Currently, two official plugins are available:
+The project combines 3D visualization, biological education, and interactive simulations to help users understand how different parts of the ear function and how exposure to high decibel levels can affect hearing health.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Interactive 3D Human Ear Visualization
+- Explore Different Ear Components
+- Real-Time Decibel Simulation
+- Hearing Health Monitoring System
+- Ear Damage & Recovery Simulation
+- Educational Audio Pathway Tour
+- Responsive Modern UI
+- React-based Component Architecture
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🧠 Ear Parts Included
+
+- Pinna (Outer Ear)
+- Ear Canal
+- Eardrum (Tympanic Membrane)
+- Ossicles
+- Cochlea
+- Auditory Nerve
+
+---
+
+## ⚙️ Tech Stack
+
+- React.js
+- JavaScript
+- CSS3
+- Three.js / React Three Fiber
+- HTML5
+
+---
+
+## 📚 Learning Objectives
+
+This project was built to:
+- Simplify human ear anatomy learning
+- Demonstrate sound transmission visually
+- Simulate hearing damage caused by loud sounds
+- Create an engaging educational experience using 3D graphics
+
+---
+
+## 🖥️ Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/your-username/audioanatomy-3d.git
